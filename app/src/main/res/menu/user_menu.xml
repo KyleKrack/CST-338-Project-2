@@ -7,9 +7,9 @@
         android:title="logoutUser"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/item2"
+    <item android:id="@+id/makePost"
         android:icon="@drawable/ic_icon"
-        android:title="item2"
+        android:title="Make Post"
         app:showAsAction="never" />
 
     <item android:id="@+id/item3"
