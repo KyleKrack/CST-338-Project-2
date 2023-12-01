@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GymLog V SP22</string>
+    <string name="app_name">Mutual Aid Checkpoint</string>
     <string name="mainExerciseHint">Enter Exercise</string>
     <string name="mainWeightHint">Enter Weight</string>
     <string name="mainRepsHint">Enter Reps</string>

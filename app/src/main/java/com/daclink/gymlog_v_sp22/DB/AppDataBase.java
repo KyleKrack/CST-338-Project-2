@@ -9,13 +9,17 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.daclink.gymlog_v_sp22.GymLog;
+import com.daclink.gymlog_v_sp22.Message;
+import com.daclink.gymlog_v_sp22.Post;
 import com.daclink.gymlog_v_sp22.User;
 
-@Database(entities = {GymLog.class, User.class}, version = 3)
+@Database(entities = {GymLog.class, User.class, Post.class, Message.class}, version = 3)
 @TypeConverters(DateTypeConverter.class)
 
 public abstract class AppDataBase extends RoomDatabase {
 
+    public static final String MESSAGE_TABLE = "MESSAGE_TABLE";
+    public static final String POST_TABLE = "Post_Table";
     public static final String DATABASE_NAME = "GymLog.gb";
     public static final String GYMLOG_TABLE = "gymLog_table";
 

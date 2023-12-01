@@ -158,9 +158,12 @@ public class MainActivity extends AppCompatActivity {
         List<User> users = mGymLogDAO.getAllUsers();
 
         if(users.size() <= 0 ){
-            User defaultUser = new User("daclink", "dac123");
-            User altUser = new User("drew", "dac123");
-            mGymLogDAO.insert(defaultUser, altUser);
+            User defaultUser = new User("kylelynn", "123", true);
+            User altUser = new User("kyle", "123", false);
+            User testUser = new User("testuser1", "123", false);
+            User testAdmin = new User("admin2","123", true);
+
+            mGymLogDAO.insert(defaultUser, altUser, testUser,testAdmin);
         }
 
         Intent intent = LoginActivity.intentFactory(this);
@@ -253,8 +256,8 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(this, "Logout User Selected", Toast.LENGTH_SHORT).show();
                 logoutUser();
                 return true;
-            case R.id.item2:
-                Toast.makeText(this, "item 2 selected", Toast.LENGTH_SHORT).show();
+            case R.id.makePost:
+                Toast.makeText(this, "Make Post selected", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.item3:
                 Toast.makeText(this, "item 3 selected", Toast.LENGTH_SHORT).show();

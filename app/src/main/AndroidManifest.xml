@@ -9,6 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GymLog_v_sp22">
         <activity
+            android:name=".SendMessageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MakePostActivity"
             android:exported="false" />
         <activity

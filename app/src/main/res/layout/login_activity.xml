@@ -34,12 +34,36 @@
 
   <Button
       android:id="@+id/buttonLogin"
-      android:layout_width="200dp"
-      android:layout_height="120dp"
+      android:layout_width="158dp"
+      android:layout_height="94dp"
       android:layout_marginTop="24dp"
-      android:textSize="30sp"
       android:text="@string/login"
+      android:textSize="30sp"
+      app:iconTint="@color/ffBLUE"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/editTextLoginPassword" />
+
+  <Button
+      android:id="@+id/buttonLogin2"
+      android:layout_width="112dp"
+      android:layout_height="60dp"
+      android:layout_marginTop="20dp"
+      android:text="New User"
+      android:textSize="15sp"
+      app:iconTint="@color/ffBLUE"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.498"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+
+  <ImageView
+      android:id="@+id/imageView2"
+      android:layout_width="355dp"
+      android:layout_height="290dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/buttonLogin2"
+      app:srcCompat="@drawable/mutual_aid_checkpoint" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

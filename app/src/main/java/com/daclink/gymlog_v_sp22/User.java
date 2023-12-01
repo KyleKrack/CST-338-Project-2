@@ -18,11 +18,11 @@ public class User {
     private double accountAmount;
 
 
-    public User(String userName, String password) {
+    public User(String userName, String password, Boolean isAdmin) {
         //mUserId = userId;
         mUserName = userName;
         mPassword = password;
-        //this.isAdmin = isAdmin;
+        this.isAdmin = isAdmin;
         //this.accountAmount = accountAmount;
     }
 
