@@ -50,4 +50,11 @@ public interface GymLogDAO {
     @Query("SELECT * FROM " + AppDataBase.USER_TABLE + " WHERE mUserId = :userId ")
     User getUserByUserId(int userId);
 
+
+
+
+
+
+
+
 }

@@ -6,4 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".MakePostActivity">
 
+    <Button
+        android:id="@+id/CancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Cancel"
+        app:layout_constraintTop_toBottomOf="@+id/PostLink"
+        tools:layout_editor_absoluteX="48dp" />
+
+    <Button
+        android:id="@+id/SendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Post to dash"
+        app:layout_constraintTop_toBottomOf="@+id/postUrgency"
+        tools:layout_editor_absoluteX="234dp" />
+
+    <EditText
+        android:id="@+id/PostLink"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="36dp"
+        android:hint="Link to venmo, cashapp, etc."
+        app:layout_constraintEnd_toStartOf="@+id/postUrgency"
+        app:layout_constraintHorizontal_bias="0.013"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postContents" />
+
+    <EditText
+        android:id="@+id/postContents"
+        android:layout_width="330dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="148dp"
+        android:hint="Post description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.597"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/postUrgency"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Post urgency"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/messageContents"
+        app:layout_constraintTop_toBottomOf="@+id/postContents" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

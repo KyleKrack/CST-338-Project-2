@@ -69,20 +69,13 @@ public class MainActivity extends AppCompatActivity {
 
         mMainDisplay.setMovementMethod(new ScrollingMovementMethod());
 
-
         refreshDisplay();
-
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
                 submitGymLog();
-
                 refreshDisplay();
-
             }
         });
     } //end of onCreate
@@ -259,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.makePost:
                 Toast.makeText(this, "Make Post selected", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.item3:
+            case R.id.aboutPage:
                 Toast.makeText(this, "item 3 selected", Toast.LENGTH_SHORT).show();
                 return true;
 

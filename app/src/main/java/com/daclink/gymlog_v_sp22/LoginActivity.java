@@ -21,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button mButton;
 
+    private Button mNewUserButton;
+
     private GymLogDAO mGymLogDAO;
 
     private String mUsername;
@@ -45,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.editTextLoginPassword);
 
         mButton = findViewById(R.id.buttonLogin);
+        //TODO: add mNewUserButton
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                      }else{
 
                         // Intent intent = MainActivity.intentFactory(getApplicationContext(),mUser.getUserId());
-                         Intent intent = UserDashActivity.intentFactory(getApplicationContext(),mUser.getUserId());
+                         Intent intent = AdminDashActivity.intentFactory(getApplicationContext(),mUser.getUserId());
                          startActivity(intent);
                      }
                 }
