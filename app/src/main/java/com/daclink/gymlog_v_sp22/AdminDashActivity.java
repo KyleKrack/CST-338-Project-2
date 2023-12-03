@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,10 +48,14 @@ public class AdminDashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_dash);
 
         getDatabase();
-        //checkForUser();
+        //mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
+        checkForUser();
+        addUserToPreference(mUserId);
+        loginUser(mUserId);
+
         defaultPosts();
 
-        mUserId = 1;
+        //mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
         //Post defaultPost = new Post(mUserId, "Need money for food",  "@kyle");
         //mGymLogDAO.insert(defaultPost);
         //addUserToPreference(mUserId);
@@ -60,21 +65,38 @@ public class AdminDashActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mPostDisplay = binding.postDisplay;
-
+        mMessageDisplay = binding.messagesDisplay;
+        mPostDisplay.setMovementMethod(new ScrollingMovementMethod());
+        mMessageDisplay.setMovementMethod(new ScrollingMovementMethod());
 
         refreshDisplay();
     }
 
     private void defaultPosts() {
-        List<Post> postList = mGymLogDAO.getAllPosts();
+        //mPostList.clear();
+        //mMessageList.clear();
+        List<Post> mPostList = mGymLogDAO.getAllPosts();
+        List<Message> mMessageList = mGymLogDAO.getAllMessagesBySentToUser(mUserId);
+        if(mPostList.size() <= 0 ){
+            Post defaultPost = new Post(1, "Need money for food",  "@kylelynn");
+            Post defaultPost2 = new Post(2, "rent is due soon!",  "@kyle");
+            Post defaultPost3 = new Post(4, "These med prices are killing me!!",  "@admin2");
+            Post defaultPost4 = new Post(3, "car broke down :<",  "@defaultuser1");
 
-        if(postList.size() <= 0 ){
-            Post defaultPost = new Post(2, "Need money for food",  "@kylelynn");
-            Post defaultPost2 = new Post(1, "rent is due soon!",  "@kyle");
-            Post defaultPost3 = new Post(1, "My meds are killing me!!",  "@kyle");
-
-            mGymLogDAO.insert(defaultPost,defaultPost2);
+            mGymLogDAO.insert(defaultPost,defaultPost2, defaultPost3, defaultPost4);
         }
+
+
+        if(mMessageList.size() <= 0 ){
+
+            Message defaultMessage = new Message(2,1,"I can help with food! - kyle");
+            Message defaultMessage2 = new Message(1,2,"I can help with rent! - kylelynn");
+            Message defaultMessage3 = new Message(3,4,"I can help you admin! - testuser1");
+            Message defaultMessage4 = new Message(4,3,"I can help you user! - admin2");
+            mGymLogDAO.insert(defaultMessage, defaultMessage2,defaultMessage3,defaultMessage4);
+
+        }
+
     }
 
 
@@ -82,7 +104,11 @@ public class AdminDashActivity extends AppCompatActivity {
 
     }
     private void refreshDisplay(){
+        //mPostList.clear();
+        //mMessageList.clear();
+
         mPostList = mGymLogDAO.getAllPosts();
+        mMessageList = mGymLogDAO.getAllMessagesBySentToUser(mUserId);
 
         if(!mPostList.isEmpty()){
             StringBuilder sb = new StringBuilder();
@@ -95,7 +121,18 @@ public class AdminDashActivity extends AppCompatActivity {
         }
 
 
+        mMessageList = mGymLogDAO.getAllMessagesBySentToUser(mUserId);
+        //mMessageList = mGymLogDAO.get
 
+        if(!mMessageList.isEmpty()){
+            StringBuilder sb = new StringBuilder();
+            for(Message log : mMessageList){
+                sb.append(log.toString());
+            }
+            mMessageDisplay.setText(sb.toString());
+        }else{
+            mMessageDisplay.setText("Somebody will contact you soon!"+ mUserId);
+        }
 
 
     }
@@ -176,6 +213,7 @@ public class AdminDashActivity extends AppCompatActivity {
                         clearUserFromPref();
                         mUserId = -1;
                         checkForUser();
+
                     }
                 });
 
@@ -214,17 +252,15 @@ public class AdminDashActivity extends AppCompatActivity {
                 logoutUser();
                 return true;
 
-            case R.id.viewPosts:
-                Toast.makeText(this, "View post selected", Toast.LENGTH_SHORT).show();
-                return true;
+
 
             case R.id.makePost:
                 Toast.makeText(this, "Make post selected", Toast.LENGTH_SHORT).show();
+                Intent intent = MakePostActivity.intentFactory(getApplicationContext(), mUser.getUserId());
+                startActivity(intent);
                 return true;
 
-            case R.id.viewMessages:
-                Toast.makeText(this, "View messages selected", Toast.LENGTH_SHORT).show();
-                return true;
+
 
             case R.id.sendMessage:
                 Toast.makeText(this, "Send message selected", Toast.LENGTH_SHORT).show();
@@ -255,7 +291,7 @@ public class AdminDashActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         if(mUser != null){
             MenuItem item = menu.findItem(R.id.logoutUser);
-            item.setTitle("logout" + mUser.getUserName());
+            item.setTitle("logout " + mUser.getUserName());
         }
         return super.onPrepareOptionsMenu(menu);
 
@@ -266,7 +302,7 @@ public class AdminDashActivity extends AppCompatActivity {
 
     public static Intent intentFactory(Context context, int userId){
         Intent intent = new Intent(context, AdminDashActivity.class);
-        //intent.putExtra(USER_ID_KEY, userId);
+        intent.putExtra(USER_ID_KEY, userId);
 
         return intent;
     }

@@ -71,5 +71,22 @@ public interface GymLogDAO {
 
 
 
+ @Insert
+ void insert (Message... messages);
+
+ @Update
+ void update (Message... messages);
+
+ @Delete
+ void delete (Message message);
+
+ @Query("SELECT * FROM " + AppDataBase.MESSAGE_TABLE + " WHERE mReceiver = :receiver ")
+ List<Message> getAllMessagesBySentToUser(int receiver);
+ @Query("SELECT * FROM " + AppDataBase.MESSAGE_TABLE +" WHERE mMessageID = :logId")
+ List<Message> getMessagesByID(int logId);
+
+
+
+
 
 }

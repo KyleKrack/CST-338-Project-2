@@ -11,26 +11,24 @@ public class Message {
     private int mMessageID;
 
     private int mSender;
-    private int mReciever;
+    private int mReceiver;
     private String mMessageText;
 
 
-    public Message(int messageID, int sender, int reciever, String messageText) {
-        mMessageID = messageID;
+    public Message(int sender, int receiver, String messageText) {
+        //mMessageID = messageID;
         mSender = sender;
-        mReciever = reciever;
+        mReceiver = receiver;
         mMessageText = messageText;
     }
 
 
     @Override
     public String toString() {
-        return "Message{" +
-                "mMessageID=" + mMessageID +
-                ", mSender=" + mSender +
-                ", mReciever=" + mReciever +
-                ", mMessageText='" + mMessageText + '\'' +
-                '}';
+        return "<3 <3 <3 <3 <3 <3 <3" +"\n" +
+                "user " + mSender + ": " +"\n" +
+                mMessageText +"\n" +
+                "<3 <3 <3 <3 <3 <3 <3"+ "\n";
     }
 
     public int getMessageID() {
@@ -49,12 +47,12 @@ public class Message {
         mSender = sender;
     }
 
-    public int getReciever() {
-        return mReciever;
+    public int getReceiver() {
+        return mReceiver;
     }
 
-    public void setReciever(int reciever) {
-        mReciever = reciever;
+    public void setReceiver(int receiver) {
+        mReceiver = receiver;
     }
 
     public String getMessageText() {

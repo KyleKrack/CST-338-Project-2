@@ -12,20 +12,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="user dash"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toTopOf="@+id/postDisplay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.491" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="374dp"
-        android:layout_height="456dp"
-        android:layout_marginBottom="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="18dp" />
+        android:id="@+id/postDisplay"
+        android:layout_width="363dp"
+        android:layout_height="206dp"
+        android:text="posts"
+        tools:layout_editor_absoluteX="19dp"
+        tools:layout_editor_absoluteY="160dp" />
+
+    <TextView
+        android:id="@+id/messagesDisplay"
+        android:layout_width="368dp"
+        android:layout_height="236dp"
+        android:layout_marginTop="56dp"
+        android:text="messages"
+        app:layout_constraintTop_toBottomOf="@+id/postDisplay"
+        tools:layout_editor_absoluteX="16dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

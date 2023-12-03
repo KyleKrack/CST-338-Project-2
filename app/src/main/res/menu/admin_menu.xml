@@ -7,15 +7,7 @@
         android:title="logout"
         app:showAsAction="never" />
 
-    <item android:id="@+id/viewPosts"
-        android:icon="@drawable/ic_icon"
-        android:title="View Posts"
-        app:showAsAction="never" />
 
-    <item android:id="@+id/viewMessages"
-        android:icon="@drawable/ic_icon"
-        android:title="View Messages"
-        app:showAsAction="never" />
 
     <item android:id="@+id/makePost"
         android:icon="@drawable/ic_icon"

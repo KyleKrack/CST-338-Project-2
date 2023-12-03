@@ -14,7 +14,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,80 +21,121 @@ import android.widget.Toast;
 
 import com.daclink.gymlog_v_sp22.DB.AppDataBase;
 import com.daclink.gymlog_v_sp22.DB.GymLogDAO;
-import com.daclink.gymlog_v_sp22.databinding.ActivityMainBinding;
+import com.daclink.gymlog_v_sp22.databinding.ActivityUserDashBinding;
+//import com.daclink.gymlog_v_sp22.databinding.ActivityMainBinding;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UserDashActivity extends AppCompatActivity {
 
-
     private static final String USER_ID_KEY = "com.daclink.gymlog_v_sp22.userIdKey";
     private static final String PREFERENCES_KEY = "com.daclink.gymlog_v_sp22.PREFERENCES_KEY";
-    ActivityMainBinding binding;
-    private TextView mMainDisplay;
-    private Button mSubmit;
+    ActivityUserDashBinding binding;
+    private TextView mPostDisplay;
+    private TextView mMessageDisplay;
     private GymLogDAO mGymLogDAO;
-
-    private List<GymLog> mGymLogList;
-
+    private List<Post> mPostList;
+    private List<Message> mMessageList;
     private int mUserId = -1;
     private SharedPreferences mPreferences = null;
     private User mUser;
 
 
-    ArrayList<Post> listOfPosts = new ArrayList<>();
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_dash);
+        setContentView(R.layout.activity_admin_dash);
 
         getDatabase();
+        //mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
         checkForUser();
         addUserToPreference(mUserId);
         loginUser(mUserId);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        defaultPosts();
+
+        //mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
+        //Post defaultPost = new Post(mUserId, "Need money for food",  "@kyle");
+        //mGymLogDAO.insert(defaultPost);
+        //addUserToPreference(mUserId);
+        //loginUser(mUserId);
+
+        binding = ActivityUserDashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mMainDisplay = binding.mainGymLogDisplay;
-        // mExercise = binding.mainExerciseEditText;
-        // mWeight = binding.mainWeightEditText;
-        // mReps = binding.mainRepsEditText;
-        mSubmit = binding.mainSubmitButton;
-
-       // mMainDisplay.setMovementMethod(new ScrollingMovementMethod());
+        mPostDisplay = binding.postDisplay;
+        mMessageDisplay = binding.messagesDisplay;
+        mPostDisplay.setMovementMethod(new ScrollingMovementMethod());
+        mMessageDisplay.setMovementMethod(new ScrollingMovementMethod());
 
         refreshDisplay();
-
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                submitGymLog();
-                refreshDisplay();
-            }
-        });
-    } //end of onCreate
-
-
-
-    private void loginUser(int userId) {
-        mUser = mGymLogDAO.getUserByUserId(userId);
-        invalidateOptionsMenu();
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if(mUser != null){
-            MenuItem item = menu.findItem(R.id.logoutUser);
-            item.setTitle(mUser.getUserName());
+    private void defaultPosts() {
+        //mPostList.clear();
+        //mMessageList.clear();
+        List<Post> mPostList = mGymLogDAO.getAllPosts();
+        List<Message> mMessageList = mGymLogDAO.getAllMessagesBySentToUser(mUserId);
+        if(mPostList.size() <= 0 ){
+            Post defaultPost = new Post(1, "Need money for food",  "@kylelynn");
+            Post defaultPost2 = new Post(2, "rent is due soon!",  "@kyle");
+            Post defaultPost3 = new Post(4, "These med prices are killing me!!",  "@admin2");
+            Post defaultPost4 = new Post(3, "car broke down :<",  "@defaultuser1");
+
+            mGymLogDAO.insert(defaultPost,defaultPost2, defaultPost3, defaultPost4);
         }
-        return super.onPrepareOptionsMenu(menu);
+
+
+        if(mMessageList.size() <= 0 ){
+
+            Message defaultMessage = new Message(2,1,"I can help with food! - kyle");
+            Message defaultMessage2 = new Message(1,2,"I can help with rent! - kylelynn");
+            Message defaultMessage3 = new Message(3,4,"I can help you admin! - testuser1");
+            Message defaultMessage4 = new Message(4,3,"I can help you user! - admin2");
+            mGymLogDAO.insert(defaultMessage, defaultMessage2,defaultMessage3,defaultMessage4);
+
+        }
 
     }
 
+
+    public void wireUpDisplay(){
+
+    }
+    private void refreshDisplay(){
+        //mPostList.clear();
+        //mMessageList.clear();
+
+        mPostList = mGymLogDAO.getAllPosts();
+        mMessageList = mGymLogDAO.getAllMessagesBySentToUser(mUserId);
+
+        if(!mPostList.isEmpty()){
+            StringBuilder sb = new StringBuilder();
+            for(Post log : mPostList){
+                sb.append(log.toString());
+            }
+            mPostDisplay.setText(sb.toString());
+        }else{
+            mPostDisplay.setText(R.string.no_logs_message);
+        }
+
+
+        mMessageList = mGymLogDAO.getAllMessagesBySentToUser(mUserId);
+        //mMessageList = mGymLogDAO.get
+
+        if(!mMessageList.isEmpty()){
+            StringBuilder sb = new StringBuilder();
+            for(Message log : mMessageList){
+                sb.append(log.toString());
+            }
+            mMessageDisplay.setText(sb.toString());
+        }else{
+            mMessageDisplay.setText("Somebody will contact you soon!"+ mUserId);
+        }
+
+
+    }
     private void getDatabase() {
         mGymLogDAO = Room.databaseBuilder(this, AppDataBase.class, AppDataBase.DATABASE_NAME)
                 .allowMainThreadQueries()
@@ -103,6 +143,10 @@ public class UserDashActivity extends AppCompatActivity {
 
     }
 
+    private void loginUser(int userId) {
+        mUser = mGymLogDAO.getUserByUserId(userId);
+        invalidateOptionsMenu();
+    }
     private void clearUserFromIntent(){
         getIntent().putExtra(USER_ID_KEY,-1);
     }
@@ -110,9 +154,6 @@ public class UserDashActivity extends AppCompatActivity {
     private void clearUserFromPref(){
         addUserToPreference(-1);
     }
-
-
-
     private void addUserToPreference(int userId) {
         if(mPreferences==null){
             getPrefs();
@@ -120,23 +161,14 @@ public class UserDashActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putInt(USER_ID_KEY, userId);
     }
-
-
     private void checkForUser() {
-
         //do we have a user in the intent?
         mUserId = getIntent().getIntExtra(USER_ID_KEY, -1);
-
-
-
         //do we have a user in the preferences?
         if(mUserId != -1){
             return;
         }
-
         //SharedPreferences preferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
-
-
         if( mPreferences == null) {
             getPrefs();
         }
@@ -145,9 +177,6 @@ public class UserDashActivity extends AppCompatActivity {
         if(mUserId != -1){
             return;
         }
-
-
-
         //do we have any users at all?
         List<User> users = mGymLogDAO.getAllUsers();
 
@@ -162,15 +191,13 @@ public class UserDashActivity extends AppCompatActivity {
 
         Intent intent = LoginActivity.intentFactory(this);
         startActivity(intent);
-
-
     }
+
+
 
     private void getPrefs() {
         mPreferences = this.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
     }
-
-
     private void logoutUser(){
 
         Toast.makeText(this, "Logout User Selected", Toast.LENGTH_SHORT).show();
@@ -186,6 +213,7 @@ public class UserDashActivity extends AppCompatActivity {
                         clearUserFromPref();
                         mUserId = -1;
                         checkForUser();
+
                     }
                 });
 
@@ -206,58 +234,16 @@ public class UserDashActivity extends AppCompatActivity {
 
 
 
-
-
-    private void submitGymLog(){
-        //String exercise = mExercise.getText().toString();
-        //double weight = Double.parseDouble(mWeight.getText().toString());
-        //int reps = Integer.parseInt(mReps.getText().toString());
-
-        //GymLog log = new GymLog(exercise, weight, reps, mUserId);
-
-        //log.setUserId(mUser.getUserId());
-
-       // mGymLogDAO.insert(log);
-
-
-    }
-
-    private void refreshDisplay(){
-        mGymLogList = mGymLogDAO.getGymLogsById(mUserId);
-        if(!mGymLogList.isEmpty()){
-            StringBuilder sb = new StringBuilder();
-            for(GymLog log : mGymLogList){
-                sb.append(log.toString());
-            }
-            mMainDisplay.setText(sb.toString());
-        }else{
-            mMainDisplay.setText(R.string.no_logs_message);
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-    public static Intent intentFactory(Context context, int userId){
-        Intent intent = new Intent(context, UserDashActivity.class);
-        intent.putExtra(USER_ID_KEY, userId);
-
-        return intent;
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.user_menu, menu);
+        inflater.inflate(R.menu.admin_menu, menu);
         return true;
     }
+
+
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -266,17 +252,15 @@ public class UserDashActivity extends AppCompatActivity {
                 logoutUser();
                 return true;
 
-            case R.id.viewPosts:
-                Toast.makeText(this, "View post selected", Toast.LENGTH_SHORT).show();
-                return true;
+
 
             case R.id.makePost:
                 Toast.makeText(this, "Make post selected", Toast.LENGTH_SHORT).show();
+                Intent intent = MakePostActivity.intentFactory(getApplicationContext(), mUser.getUserId());
+                startActivity(intent);
                 return true;
 
-            case R.id.viewMessages:
-                Toast.makeText(this, "View messages selected", Toast.LENGTH_SHORT).show();
-                return true;
+
 
             case R.id.sendMessage:
                 Toast.makeText(this, "Send message selected", Toast.LENGTH_SHORT).show();
@@ -298,14 +282,30 @@ public class UserDashActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
+    }
+
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(mUser != null){
+            MenuItem item = menu.findItem(R.id.logoutUser);
+            item.setTitle("logout " + mUser.getUserName());
+        }
+        return super.onPrepareOptionsMenu(menu);
 
     }
 
 
 
 
+    public static Intent intentFactory(Context context, int userId){
+        Intent intent = new Intent(context, UserDashActivity.class);
+        intent.putExtra(USER_ID_KEY, userId);
+
+        return intent;
+    }
 
 
 }

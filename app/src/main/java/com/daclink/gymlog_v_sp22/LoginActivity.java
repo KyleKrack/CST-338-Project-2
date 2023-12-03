@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordField = findViewById(R.id.editTextLoginPassword);
 
         mButton = findViewById(R.id.buttonLogin);
+        mNewUserButton = findViewById(R.id.buttonLogin2);
         //TODO: add mNewUserButton
 
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -59,14 +60,57 @@ public class LoginActivity extends AppCompatActivity {
                      }else{
 
                         // Intent intent = MainActivity.intentFactory(getApplicationContext(),mUser.getUserId());
-                         Intent intent = AdminDashActivity.intentFactory(getApplicationContext(),mUser.getUserId());
-                         startActivity(intent);
+                         transitionToDash();
                      }
                 }
 
             }
         });
+
+
+        mNewUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getValuesFromDisplay();
+                if(! checkForUserInDataBase() ) {
+
+                    //make new user
+                    User newUser = new User(mUsername,mPassword,false);
+                    //insert into database
+                    mGymLogDAO.insert(newUser);
+                    //set mUser
+                    mUser = newUser;
+                    Toast.makeText(LoginActivity.this, "New user created!", Toast.LENGTH_SHORT).show();
+                    //login to dash with new user
+
+
+                        // Intent intent = MainActivity.intentFactory(getApplicationContext(),mUser.getUserId());
+                        transitionToDash();
+
+                } else{
+                    Toast.makeText(LoginActivity.this, "User already exists!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
     }
+
+
+    private void transitionToDash(){
+
+        Intent intent;
+        if(mUser.isAdmin()){
+            intent = AdminDashActivity.intentFactory(getApplicationContext(), mUser.getUserId());
+        }else{
+            intent = UserDashActivity.intentFactory(getApplicationContext(), mUser.getUserId());
+        }
+        startActivity(intent);
+
+    }
+
+
 
     private boolean validatePassword(){
         return mUser.getPassword().equals(mPassword);
