@@ -24,22 +24,20 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
-                "mPostUserID=" + mPostUserID +
-                ", mPostType=" + mPostType +
-                ", mPostDescription='" + mPostDescription + '\'' +
-                ", mDatePostMade=" + mDatePostMade +
-                ", mPostUrgency='" + mPostUrgency + '\'' +
-                ", mPostUserLink='" + mPostUserLink + '\'' +
-                '}';
+        return
+                "=================================="+ "\n" +
+                mDatePostMade + "\n" +
+                mPostDescription + "\n" +
+                mPostUserLink + "\n" +
+                "=================================="+ "\n" ;
     }
 
-    public Post(int postUserID, int postType, String postDescription, Date datePostMade, String postUrgency, String postUserLink) {
+    public Post(int postUserID, String postDescription, String postUserLink) {
         mPostUserID = postUserID;
-        mPostType = postType;
+        //mPostType = postType;
         mPostDescription = postDescription;
-        mDatePostMade = datePostMade;
-        mPostUrgency = postUrgency;
+        mDatePostMade = new Date();
+        //mPostUrgency = postUrgency;
         mPostUserLink = postUserLink;
     }
 

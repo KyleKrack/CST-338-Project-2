@@ -66,7 +66,7 @@ public class UserDashActivity extends AppCompatActivity {
         // mReps = binding.mainRepsEditText;
         mSubmit = binding.mainSubmitButton;
 
-        mMainDisplay.setMovementMethod(new ScrollingMovementMethod());
+       // mMainDisplay.setMovementMethod(new ScrollingMovementMethod());
 
         refreshDisplay();
 

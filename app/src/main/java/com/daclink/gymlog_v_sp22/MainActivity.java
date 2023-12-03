@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         if(mUser != null){
             MenuItem item = menu.findItem(R.id.logoutUser);
-            item.setTitle(mUser.getUserName());
+            item.setTitle("logout" + mUser.getUserName());
         }
         return super.onPrepareOptionsMenu(menu);
 

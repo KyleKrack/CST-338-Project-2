@@ -8,6 +8,8 @@ import androidx.room.Update;
 
 import com.daclink.gymlog_v_sp22.GymLog;
 import com.daclink.gymlog_v_sp22.User;
+import  com.daclink.gymlog_v_sp22.Post;
+import com.daclink.gymlog_v_sp22.Message;
 
 import java.util.List;
 
@@ -52,6 +54,19 @@ public interface GymLogDAO {
 
 
 
+    @Insert
+    void insert (Post... posts);
+
+    @Update
+    void update (Post... posts);
+
+    @Delete
+    void delete (Post post);
+
+    @Query("SELECT * FROM " + AppDataBase.POST_TABLE + " ORDER BY mDatePostMade desc")
+    List<Post> getAllPosts();
+    @Query("SELECT * FROM " + AppDataBase.POST_TABLE +" WHERE mPostUserID = :logId")
+    List<Post> getPostsByID(int logId);
 
 
 
